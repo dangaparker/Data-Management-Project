@@ -30,6 +30,8 @@ function getData() {
 )
 }
 
+
+
 function clearPage(){
   document.getElementById('tableBody').innerHTML = "";
 }
@@ -102,15 +104,21 @@ var grade = document.getElementById("studentGrade");
 var submitBtn = document.getElementById("submitBtn")
 
 function submitClick() {
-debugger
+
   var newStudentObject = {};
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
   newStudentObject.grade = grade.value;
 
   dbRefObject.push(newStudentObject);
+  clearStudentForm();
+  getData();
+}
 
-
+function clearStudentForm(){
+  $('#studentName').val('');
+  $('#course').val('');
+  $('#studentGrade').val('');
 }
 
 
