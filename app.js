@@ -41,7 +41,13 @@
         liToRemove.remove();
       })
 
+      var mainText = document.getElementById("mainText");
+      var submitBtn = document.getElementById("submitBtn")
 
+      function submitClick(){
+        var messageText = mainText.value;
+          dbRefObject.child('hobbies').set(messageText)
+      }
     //   firebase.database().ref('object').set({
     //     name: "john",
     // })
