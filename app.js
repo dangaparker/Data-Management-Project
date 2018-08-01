@@ -1,5 +1,4 @@
-// Initialize Firebase
-// (function() { 
+
 
 const config = {
   apiKey: "AIzaSyA3d7dUvmA6XDVH048f43zKm3zpBzaAUSk",
@@ -26,11 +25,24 @@ function getData() {
     console.log('DB DATA:', snap.val());
     const studentObject = snap.val();
     renderStudents(studentObject)
+    calculateAverage(studentObject)
   }
 )
 }
 
-
+function calculateAverage(studentObject){
+  var sum = null;
+  for(student in studentObject){
+    console.log('student grade:', studentObject[student].grade)
+    console.log('number of students', Object.entries(studentObject).length )
+    
+    sum = sum + parseFloat(studentObject[student].grade)
+  }
+  var average = sum / Object.entries(studentObject).length
+  average = average.toFixed(2)
+  $('.avgGrade').text(average)
+  return average;
+}
 
 function clearPage(){
   document.getElementById('tableBody').innerHTML = "";
@@ -98,21 +110,22 @@ function renderStudents(studentObject) {
 
 
 
-var nameSection = document.getElementById("studentName");
-var course = document.getElementById("course");
-var grade = document.getElementById("studentGrade");
-var submitBtn = document.getElementById("submitBtn")
+
 
 function submitClick() {
+  const nameSection = document.getElementById("studentName");
+  const course = document.getElementById("course");
+  const grade = document.getElementById("studentGrade");
+  const submitBtn = document.getElementById("submitBtn")
+  const newStudentObject = {};
 
-  var newStudentObject = {};
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
   newStudentObject.grade = grade.value;
 
   dbRefObject.push(newStudentObject);
   clearStudentForm();
-  getData();
+ // getData();
 }
 
 function clearStudentForm(){
