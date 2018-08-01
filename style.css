@@ -5,3 +5,7 @@ button{
     background-color: lightblue;
     cursor: pointer;
 }
+
+.button-group{
+    padding-left: 20%;
+}
