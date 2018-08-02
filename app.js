@@ -1,4 +1,21 @@
+$(document).ready(initializeApp);
 
+
+function initializeApp() {
+  addClickHandlersToElements();
+  console.log('ready')
+
+}
+
+function addClickHandlersToElements() {
+  $('#studentName').on("input", checkIfValid.bind(null, "studentName", ".add-student-invalid" ));
+  $('#course').on("input", checkIfValid.bind(null, "course", ".add-course-invalid"));
+  $('#studentGrade').on("input"), checkIfValid.bind(null, "studentGrade", ".add-grade-invalid");
+  $('#modalStudentName').on("input", checkIfValid.bind(null, "modalStudentName", ".modal-add-student-invalid"));
+  $('#modalCourse').on("input", checkIfValid.bind(null, "modalCourse", ".modal-add-course-invalid"));
+  $('#modalStudentGrade').on("input", checkIfValid.bind(null, "modalStudentGrade", ".modal-add-grade-invalid"));
+
+}
 
 const config = {
   apiKey: "AIzaSyA3d7dUvmA6XDVH048f43zKm3zpBzaAUSk",
@@ -130,7 +147,6 @@ function updateStudent(studentObject, student) {
   updateStudentObject.name = modalName.val()
   updateStudentObject.course = modalCourse.val();
   updateStudentObject.grade = modalGrade.val()
-  console.log('updateObject1', updateStudentObject)
   dbRefObject.child(student).set(updateStudentObject);
   getData();
   }
@@ -177,39 +193,18 @@ function submitClick() {
  // getData();
 }
 
-function checkValidStudent(){
-  
-  const nameSection = document.getElementById("studentName")
 
-  if (!nameSection.value) {
-    $('.add-student-invalid').addClass('show-message')
+function checkIfValid(inputId, responseElementClass){
+  const pageElement = document.getElementById(inputId)
+
+  if (!pageElement.value) {
+    $(responseElementClass).addClass('show-message')
   }
   else{
-    $('.add-student-invalid').removeClass('show-message')
+    $(responseElementClass).removeClass('show-message')
   }
 }
 
-function checkValidCourse(){
-  const course = document.getElementById("course");
-  if(!course.value){
-    $('.add-course-invalid').addClass('show-message')
-    return;
-  }
-  else{
-    $('.add-course-invalid').removeClass('show-message')
-  }
-}
-
-function checkValidGrade(){
-  const grade = document.getElementById("studentGrade");
-  if(!grade.value){
-    $('.add-grade-invalid').addClass('show-message')
-    return;
-  }
-  else{
-    $('.add-course-invalid').removeClass('show-message')
-  }
-}
 
 function clearStudentForm(){
   $('#studentName').val('');
@@ -218,8 +213,4 @@ function clearStudentForm(){
 }
 
 
-    //   firebase.database().ref('object').set({
-    //     name: "john",
-    // })
-
-    // }()); 
+  
