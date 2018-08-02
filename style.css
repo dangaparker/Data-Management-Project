@@ -9,3 +9,24 @@ button{
 .button-group{
     padding-left: 20%;
 }
+
+.student-update{
+    width: 88%
+}
+
+.student-delete{
+    width: 100%;
+}
+
+.hide-message{
+    display: none;
+} 
+.show-message{
+    display: block;
+    color: red;
+    text-align: center;
+}
+
+
+    
+    

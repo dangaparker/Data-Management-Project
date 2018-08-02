@@ -22,20 +22,21 @@ const dbRefList = dbRefObject.child('hobbies')
 //sync object changes
 function getData() {
   dbRefObject.on('value', snap => {
-    console.log('DB DATA:', snap.val());
     const studentObject = snap.val();
-    renderStudents(studentObject)
+    clearPage();    
+    for (var student in studentObject) {
+      renderStudents(studentObject[student], student)
+    }
     calculateAverage(studentObject)
   }
 )
 }
 
+
+
 function calculateAverage(studentObject){
   var sum = null;
   for(student in studentObject){
-    console.log('student grade:', studentObject[student].grade)
-    console.log('number of students', Object.entries(studentObject).length )
-    
     sum = sum + parseFloat(studentObject[student].grade)
   }
   var average = sum / Object.entries(studentObject).length
@@ -48,46 +49,47 @@ function clearPage(){
   document.getElementById('tableBody').innerHTML = "";
 }
 
-function renderStudents(studentObject) {
-  clearPage();
-  console.log(studentObject);
-    for (student in studentObject) {
+function renderStudents(studentObj, student) {
+  // clearPage();
+    // for (student in studentObject) {
       var outer_tr = $('<tr>');
       var inner_td_name = $('<td>', {
-        text: studentObject[student].name
+        text: studentObj.name
       });
 
       var inner_td_course = $('<td>', {
-        text: studentObject[student].course
+        text: studentObj.course
       })
       var innter_td_grade = $('<td>', {
-        text: studentObject[student].grade
+        text: studentObj.grade
       })
-      var inner_button = $('<td>')
-      var button = $('<button>', {
+      var inner_button = $('<td>');
+      var second_inner_button = $('<td>');
+      var update_button = $('<button>', {
+        text: 'Update',
+        class: 'btn btn-secondary student-update',
+        'data-toggle': "modal",
+        'data-target': "#updateModal",
+        on: {
+          click: function() {
+            showStudentInfoOnModal(studentObj, student)
+          }
+        }
+      })
+      var delete_button = $('<button>', {
         text: 'Delete',
-        class: 'btn btn-danger',
+        class: 'btn btn-danger student-delete',
         on: {
           click: function (){
-            console.log('delete')
-            // console.log('studentObj', studentObject.indexOf(student))
-            console.log("This is the id we need to delete the student", student);
-            dbRefObject.child(student).remove()
-            
-            // dbRefObject.on('child_removed', snap => {
-            //   const elementToRemove = document.getElementById(student);
-            //   elementToRemove.remove();
-            // })
-            
-            
-            
+            dbRefObject.child(student).remove()      
         }
       }});
-      $(inner_button).append(button)
-      $(outer_tr).append(inner_td_name, inner_td_course, innter_td_grade, inner_button);
+      $(inner_button).append(delete_button);
+      $(second_inner_button).append(update_button);
+      $(outer_tr).append(inner_td_name, inner_td_course, innter_td_grade, second_inner_button, inner_button);
       $('.student-list tbody').prepend(outer_tr);
 
-    }
+    // }
     // snap.val().map(function(name, course){
     //   console.log(name, course)
     // })
@@ -107,6 +109,31 @@ function renderStudents(studentObject) {
 //   const liChanged = document.getElementById(snap.key);
 //   liChanged.innerText = snap.val();
 // })
+function showStudentInfoOnModal(studentObject, student){
+    $('.modal-title').text(`Update ${studentObject.name}'s information`)
+    $('.modalStudentName').val(studentObject.name);
+    $('.modalStudentCourse').val(studentObject.course);
+    $('.modalStudentGrade').val(studentObject.grade);
+    $('.update-student-button').on('click' ,function() {
+      updateStudent(studentObject, student);
+      $(".update-student-button").off();
+
+    });
+}
+
+function updateStudent(studentObject, student) {
+  const modalName = $('.modalStudentName')
+  const modalCourse = $('.modalStudentCourse')
+  const modalGrade = $('.modalStudentGrade')
+  const updateStudentObject = {}
+
+  updateStudentObject.name = modalName.val()
+  updateStudentObject.course = modalCourse.val();
+  updateStudentObject.grade = modalGrade.val()
+  console.log('updateObject1', updateStudentObject)
+  dbRefObject.child(student).set(updateStudentObject);
+  getData();
+  }
 
 
 
@@ -118,14 +145,70 @@ function submitClick() {
   const grade = document.getElementById("studentGrade");
   const submitBtn = document.getElementById("submitBtn")
   const newStudentObject = {};
+  // if (!nameSection.value) {
+  //   $('.add-student-invalid').addClass('show-message')
+  //   return;
+  // }
+  // else{
+  //   $('.add-student-invalid').removeClass('show-message')
+  // }
+  // if(!course.value){
+  //   $('.add-course-invalid').addClass('show-message')
+  //   return;
+  // }
+  // else{
+  //   $('.add-course-invalid').removeClasse('show-message')
+  // }
+  // if(!grade.value){
+  //   $('.add-grade-invalid').addClass('show-message')
+  //   return;
+  // }
+  // else{
+  //   $('.add-course-invalid').removeClass('show-message')
+  // }
 
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
   newStudentObject.grade = grade.value;
+  
 
   dbRefObject.push(newStudentObject);
   clearStudentForm();
  // getData();
+}
+
+function checkValidStudent(){
+  
+  const nameSection = document.getElementById("studentName")
+
+  if (!nameSection.value) {
+    $('.add-student-invalid').addClass('show-message')
+  }
+  else{
+    $('.add-student-invalid').removeClass('show-message')
+  }
+}
+
+function checkValidCourse(){
+  const course = document.getElementById("course");
+  if(!course.value){
+    $('.add-course-invalid').addClass('show-message')
+    return;
+  }
+  else{
+    $('.add-course-invalid').removeClass('show-message')
+  }
+}
+
+function checkValidGrade(){
+  const grade = document.getElementById("studentGrade");
+  if(!grade.value){
+    $('.add-grade-invalid').addClass('show-message')
+    return;
+  }
+  else{
+    $('.add-course-invalid').removeClass('show-message')
+  }
 }
 
 function clearStudentForm(){
