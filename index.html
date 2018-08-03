@@ -62,9 +62,9 @@
             </div>
             <p class='add-grade-invalid hide-message'>please enter a grade</p>
             <div>
-                <button type="button" class="btn btn-success col-xs-3  col-sm-6" onclick="submitClick()">Add</button>
-                <button type="button" class="btn btn-danger col-xs-3  col-sm-6" onclick="clearStudentForm()">Cancel</button>
-                <button type='button' class='btn btn-info col-xs-3 col-sm-12' onclick='getData()'>Get Data</button>
+                <button type="button" class="btn btn-success col-xs-3  col-sm-6 addStudentClick">Add</button>
+                <button type="button" class="btn btn-danger col-xs-3  col-sm-6 cancelButton">Cancel</button>
+                <button type='button' class='btn btn-info col-xs-3 col-sm-12 refreshButton'>Refresh</button>
             </div>
         </div>
         <div class="student-list-container container col-sm-9 pull-left">
@@ -118,7 +118,7 @@
             <p class='modal-add-grade-invalid hide-message'>please enter a grade</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success update-student-button" data-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-success update-student-button" id="update-student-button" data-dismiss="modal">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
