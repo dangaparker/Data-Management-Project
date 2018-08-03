@@ -3,8 +3,6 @@ $(document).ready(initializeApp);
 
 function initializeApp() {
   addClickHandlersToElements();
-  console.log('ready')
-
 }
 
 function addClickHandlersToElements() {
@@ -14,7 +12,10 @@ function addClickHandlersToElements() {
   $('#modalStudentName').on("input", checkIfValid.bind(null, "modalStudentName", ".modal-add-student-invalid"));
   $('#modalCourse').on("input", checkIfValid.bind(null, "modalCourse", ".modal-add-course-invalid"));
   $('#modalStudentGrade').on("input", checkIfValid.bind(null, "modalStudentGrade", ".modal-add-grade-invalid"));
+  $('.addStudentClick').on("click", submitCheck);
 
+  $('.cancelButton').on("click", clearStudentForm);
+  $('.refreshButton').on("click", getData);
 }
 
 const config = {
@@ -139,6 +140,18 @@ function showStudentInfoOnModal(studentObject, student){
 }
 
 function updateStudent(studentObject, student) {
+  
+  var modalNameValid = checkIfValid("modalStudentName", ".modal-add-student-invalid" );
+  var modalCourseValid = checkIfValid("modalCourse", ".modal-add-course-invalid");
+  var modalGradeValid = checkIfValid("modalStudentGrade", ".modal-add-grade-invalid");
+  if(!modalNameValid || !modalCourseValid || !modalGradeValid){
+    // $('.update-student-button').attr("data-dismiss", "null");  
+    return;
+      
+  }
+  // $('.update-student-button').attr("data-dismiss", "modal")
+  // document.getElementById("update-student-button").setAttribute("data-dismiss", "modal")
+  //$('.update-student-button').attr("data-dismiss", "modal");
   const modalName = $('.modalStudentName')
   const modalCourse = $('.modalStudentCourse')
   const modalGrade = $('.modalStudentGrade')
@@ -149,13 +162,23 @@ function updateStudent(studentObject, student) {
   updateStudentObject.grade = modalGrade.val()
   dbRefObject.child(student).set(updateStudentObject);
   getData();
+  
   }
 
 
-
+function submitCheck(){
+  var nameValid = checkIfValid("studentName", ".add-student-invalid" );
+  var courseValid = checkIfValid("course", ".add-course-invalid");
+  var gradeValid = checkIfValid("studentGrade", ".add-grade-invalid");
+  if(!nameValid || !courseValid || !gradeValid){
+      return;
+  }
+  submitClick();
+}
 
 
 function submitClick() {
+  
   const nameSection = document.getElementById("studentName");
   const course = document.getElementById("course");
   const grade = document.getElementById("studentGrade");
@@ -198,10 +221,12 @@ function checkIfValid(inputId, responseElementClass){
   const pageElement = document.getElementById(inputId)
 
   if (!pageElement.value) {
-    $(responseElementClass).addClass('show-message')
+    $(responseElementClass).addClass('show-message');
+    return false;
   }
   else{
-    $(responseElementClass).removeClass('show-message')
+    $(responseElementClass).removeClass('show-message');
+    return true;
   }
 }
 
