@@ -184,28 +184,6 @@ function submitClick() {
   const grade = document.getElementById("studentGrade");
   const submitBtn = document.getElementById("submitBtn")
   const newStudentObject = {};
-  // if (!nameSection.value) {
-  //   $('.add-student-invalid').addClass('show-message')
-  //   return;
-  // }
-  // else{
-  //   $('.add-student-invalid').removeClass('show-message')
-  // }
-  // if(!course.value){
-  //   $('.add-course-invalid').addClass('show-message')
-  //   return;
-  // }
-  // else{
-  //   $('.add-course-invalid').removeClasse('show-message')
-  // }
-  // if(!grade.value){
-  //   $('.add-grade-invalid').addClass('show-message')
-  //   return;
-  // }
-  // else{
-  //   $('.add-course-invalid').removeClass('show-message')
-  // }
-
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
   newStudentObject.grade = grade.value;
