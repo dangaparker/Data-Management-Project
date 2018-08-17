@@ -3,6 +3,7 @@ $(document).ready(initializeApp);
 
 function initializeApp() {
   addClickHandlersToElements();
+  getData();
 }
 
 function addClickHandlersToElements() {
@@ -81,11 +82,11 @@ function renderStudents(studentObj, student) {
       var innter_td_grade = $('<td>', {
         text: studentObj.grade
       })
-      var inner_button = $('<td>');
-      var second_inner_button = $('<td>');
+      var inner_button = $('<td>', {class: "td-buttons"});
+      var second_inner_button = $('<td>', {class: "td-buttons"});
       var update_button = $('<button>', {
         text: 'Update',
-        class: 'btn btn-secondary student-update',
+        class: 'btn btn-info student-update',
         'data-toggle': "modal",
         'data-target': "#updateModal",
         on: {
@@ -186,8 +187,7 @@ function submitClick() {
   const newStudentObject = {};
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
-  newStudentObject.grade = grade.value;
-  
+  newStudentObject.grade = parseFloat(grade.value).toFixed(2);
 
   dbRefObject.push(newStudentObject);
   clearStudentForm();

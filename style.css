@@ -11,11 +11,14 @@ button{
 }
 
 .student-update{
-    width: 88%
+    width: 100%;
+    color: white;
+    padding: 0;
 }
 
 .student-delete{
     width: 100%;
+    padding: 0;
 }
 
 .hide-message{
@@ -27,6 +30,19 @@ button{
     text-align: center;
 }
 
+.student-list{
+    table-layout: fixed;
+    width: 100%;
+    white-space: normal;
+}
 
-    
-    
+.grade-average{
+    display: inline-block;
+}
+
+@media only screen and (max-width: 450px){
+    .table>tbody>tr>td.td-buttons{
+        padding: 8px 0;
+    }
+
+} 
