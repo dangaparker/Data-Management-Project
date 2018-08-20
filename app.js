@@ -9,14 +9,20 @@ function initializeApp() {
 function addClickHandlersToElements() {
   $('#studentName').on("input", checkIfValid.bind(null, "studentName", ".add-student-invalid" ));
   $('#course').on("input", checkIfValid.bind(null, "course", ".add-course-invalid"));
-  $('#studentGrade').on("input"), checkIfValid.bind(null, "studentGrade", ".add-grade-invalid");
+  $('#studentGrade').on("input", checkIfValid.bind(null, "studentGrade", ".add-grade-invalid"));
+  // $('#sudentGrade').on("input", checkIfValid.bind(null, "studentGrade", "valid-grade"));
   $('#modalStudentName').on("input", checkIfValid.bind(null, "modalStudentName", ".modal-add-student-invalid"));
   $('#modalCourse').on("input", checkIfValid.bind(null, "modalCourse", ".modal-add-course-invalid"));
   $('#modalStudentGrade').on("input", checkIfValid.bind(null, "modalStudentGrade", ".modal-add-grade-invalid"));
   $('.addStudentClick').on("click", submitCheck);
-
-  $('.cancelButton').on("click", clearStudentForm);
+  $('.cancelButton').on("click", clearStudentForm, clearMessage);
   $('.refreshButton').on("click", getData);
+}
+
+
+
+function clearMessage(){
+  $('.messages').removeClass('show-message')
 }
 
 const config = {
@@ -161,16 +167,24 @@ function updateStudent(studentObject, student) {
   updateStudentObject.name = modalName.val()
   updateStudentObject.course = modalCourse.val();
   updateStudentObject.grade = modalGrade.val()
-  dbRefObject.child(student).set(updateStudentObject);
-  getData();
+  // if (updateStudentObject.grade > 100){
+  //   $('.valid-grade').removeClass('hide-message')
+  //   return;
+  // }
+  // else{
+  //   $('.valid-grade').addClass('hide-message')
+  // dbRefObject.child(student).set(updateStudentObject);
+  // getData();
   
-  }
+  // }
+}
 
 
 function submitCheck(){
   var nameValid = checkIfValid("studentName", ".add-student-invalid" );
   var courseValid = checkIfValid("course", ".add-course-invalid");
   var gradeValid = checkIfValid("studentGrade", ".add-grade-invalid");
+  // var gradeRangevalid = checkIfValid("studentGrade", ".valid-grade")
   if(!nameValid || !courseValid || !gradeValid){
       return;
   }
@@ -187,17 +201,29 @@ function submitClick() {
   const newStudentObject = {};
   newStudentObject.name = nameSection.value;
   newStudentObject.course = course.value;
+ 
+  if (grade.value > 100){
+    $('.add-grade-invalid').addClass('show-message')
+    return;
+  }
+  else{
+    $('.add-grade-invalid').removeClass('show-message')
+
   newStudentObject.grade = parseFloat(grade.value).toFixed(2);
 
   dbRefObject.push(newStudentObject);
   clearStudentForm();
  // getData();
+  
+}
 }
 
 
-function checkIfValid(inputId, responseElementClass){
-  const pageElement = document.getElementById(inputId)
 
+function checkIfValid(inputId, responseElementClass){
+  
+  const pageElement = document.getElementById(inputId)
+  
   if (!pageElement.value) {
     $(responseElementClass).addClass('show-message');
     return false;
