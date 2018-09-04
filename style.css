@@ -6,6 +6,10 @@ button{
     cursor: pointer;
 }
 
+.modal-header .close {
+    width: 1em;
+    margin-top: -11px;
+}
 .button-group{
     padding-left: 20%;
 }

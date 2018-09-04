@@ -17,8 +17,38 @@ function addClickHandlersToElements() {
   $('.addStudentClick').on("click", submitCheck);
   $('.cancelButton').on("click", clearStudentForm, clearMessage);
   $('.refreshButton').on("click", getData);
+  $('#studentGrade').on('input', checkGrade);
+  $('#modalStudentGrade').on('input', checkModalGrade);
+  
 }
 
+function checkGrade(){
+  if ($('#studentGrade').val() > 100){
+    $('.add-grade-invalid').addClass('show-message')
+    $('.addStudentClick').attr('disabled', 'disabled')
+    return;
+  }
+  else{
+    $('.add-grade-invalid').addClass('hide-message')
+    $('.addStudentClick').removeAttr('disabled');
+  }
+}
+
+function checkModalGrade(){
+  if ($('.modalStudentGrade').val() > 100){
+    $('.modal-add-grade-invalid').addClass('show-message')
+    $('.update-student-button').attr('disabled', 'disabled')
+    return;
+  }
+  else{
+    $('.modal-add-grade-invalid').addClass('hide-message')
+    $('.update-student-button').removeAttr('disabled');
+  }
+}
+
+function removeDisabled(){
+  $('#update-student-button').removeAttr('disabled')
+}
 
 
 function clearMessage(){
@@ -104,23 +134,32 @@ function renderStudents(studentObj, student) {
       var delete_button = $('<button>', {
         text: 'Delete',
         class: 'btn btn-danger student-delete',
+        'data-toggle': "modal",
+        'data-target': "#deleteModal",
         on: {
-          click: function (){
-            dbRefObject.child(student).remove()      
+        click: function (){
+          deleteStudent(studentObj, student)
+            // dbRefObject.child(student).remove()
         }
+        
       }});
       $(inner_button).append(delete_button);
       $(second_inner_button).append(update_button);
       $(outer_tr).append(inner_td_name, inner_td_course, innter_td_grade, second_inner_button, inner_button);
       $('.student-list tbody').prepend(outer_tr);
 
-    // }
-    // snap.val().map(function(name, course){
-    //   console.log(name, course)
-    // })
-
   }
 
+function deleteStudent(studentObj, student){
+  
+  $('#modalDeleteButton').on('click', function (){
+    dbRefObject.child(student).remove()    
+  })
+  $('#modalCancelButton').on('click', function(){
+    $("#modalDeleteButton").off();
+    return;
+  })
+}
 
 // //sync list changes
 // dbRefList.on('child_added', snap => {
@@ -135,6 +174,7 @@ function renderStudents(studentObj, student) {
 //   liChanged.innerText = snap.val();
 // })
 function showStudentInfoOnModal(studentObject, student){
+ 
     $('.modal-title').text(`Update ${studentObject.name}'s information`)
     $('.modalStudentName').val(studentObject.name);
     $('.modalStudentCourse').val(studentObject.course);
@@ -147,7 +187,6 @@ function showStudentInfoOnModal(studentObject, student){
 }
 
 function updateStudent(studentObject, student) {
-  
   var modalNameValid = checkIfValid("modalStudentName", ".modal-add-student-invalid" );
   var modalCourseValid = checkIfValid("modalCourse", ".modal-add-course-invalid");
   var modalGradeValid = checkIfValid("modalStudentGrade", ".modal-add-grade-invalid");
@@ -167,16 +206,12 @@ function updateStudent(studentObject, student) {
   updateStudentObject.name = modalName.val()
   updateStudentObject.course = modalCourse.val();
   updateStudentObject.grade = modalGrade.val()
-  // if (updateStudentObject.grade > 100){
-  //   $('.valid-grade').removeClass('hide-message')
-  //   return;
-  // }
-  // else{
-  //   $('.valid-grade').addClass('hide-message')
-  // dbRefObject.child(student).set(updateStudentObject);
+  
+  
+  dbRefObject.child(student).set(updateStudentObject);
   // getData();
   
-  // }
+  
 }
 
 
