@@ -46,8 +46,9 @@ button{
 
 @media only screen and (max-width: 450px){
     .table>tbody>tr>td.td-buttons{
-        padding: 8px 0;
+        padding: 8px 4px;
     }
+
 
 } 
 

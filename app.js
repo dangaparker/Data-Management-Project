@@ -121,8 +121,7 @@ function renderStudents(studentObj, student) {
       var inner_button = $('<td>', {class: "td-buttons"});
       var second_inner_button = $('<td>', {class: "td-buttons"});
       var update_button = $('<button>', {
-        text: 'Update',
-        class: 'btn btn-info student-update',
+        class: 'btn btn-info student-update glyphicon glyphicon-edit',
         'data-toggle': "modal",
         'data-target': "#updateModal",
         on: {
@@ -132,8 +131,7 @@ function renderStudents(studentObj, student) {
         }
       })
       var delete_button = $('<button>', {
-        text: 'Delete',
-        class: 'btn btn-danger student-delete',
+        class: 'btn btn-danger student-delete glyphicon glyphicon-trash',
         'data-toggle': "modal",
         'data-target': "#deleteModal",
         on: {
